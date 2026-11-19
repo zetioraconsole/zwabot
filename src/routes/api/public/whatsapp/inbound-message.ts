@@ -21,10 +21,7 @@ const Body = z.object({
   messageType: z
     .enum(["TEXT", "IMAGE", "AUDIO", "VIDEO", "DOCUMENT", "LOCATION", "OTHER"])
     .default("TEXT"),
-<<<<<<< HEAD
   fromMe: z.boolean().optional(),
-=======
->>>>>>> origin/main
 });
 
 function json(body: unknown, status = 200) {
@@ -62,7 +59,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
         const businessId = account.business_id;
         const now = new Date().toISOString();
 
-<<<<<<< HEAD
         // Owner commands typed from the business phone (/takeover, /release, /status)
         if (input.fromMe) {
           const cmd = input.message.trim().toLowerCase();
@@ -81,8 +77,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
           return json({ ok: true, reply: null, ownerCommand: cmd });
         }
 
-=======
->>>>>>> origin/main
         // contact
         const { data: existingContact } = await supabaseAdmin
           .from("contacts")
@@ -173,7 +167,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
           return json({ ok: true, conversationId, reply: null, reason: "AI_DISABLED" });
         }
 
-<<<<<<< HEAD
         // Subscription quota
         const { canSendAiReply } = await import("@/lib/plans");
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -186,18 +179,13 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
           return json({ ok: true, conversationId, reply: null, reason: "QUOTA_EXCEEDED" });
         }
 
-=======
->>>>>>> origin/main
         const { buildAiReply } = await import("@/lib/ai-reply.server");
         const result = await buildAiReply(supabaseAdmin, {
           businessId,
           conversationId,
-<<<<<<< HEAD
           contactId: contactId!,
           customerPhone: input.phone,
           customerName: input.name ?? null,
-=======
->>>>>>> origin/main
           customerMessage: input.message,
         });
 
@@ -217,7 +205,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
           sender_type: "AI",
           content: result.text,
           message_type: "TEXT",
-<<<<<<< HEAD
           metadata: { model: result.model, shown: result.shown },
         });
         if (result.receipt) {
@@ -237,10 +224,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
             .update({ ai_replies_used: (sub.ai_replies_used ?? 0) + 1 })
             .eq("id", businessId);
         }
-=======
-          metadata: { model: result.model },
-        });
->>>>>>> origin/main
         await supabaseAdmin.from("usage_events").insert({
           business_id: businessId,
           event_type: "AI_REPLY",
@@ -252,7 +235,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
           .update({ last_message_at: new Date().toISOString() })
           .eq("id", conversationId);
 
-<<<<<<< HEAD
         return json({
           ok: true,
           conversationId,
@@ -261,9 +243,6 @@ export const Route = createFileRoute("/api/public/whatsapp/inbound-message")({
           receipt: result.receipt,
           model: result.model,
         });
-=======
-        return json({ ok: true, conversationId, reply: result.text, model: result.model });
->>>>>>> origin/main
       },
     },
   },

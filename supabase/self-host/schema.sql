@@ -473,11 +473,7 @@ CREATE POLICY wa_all ON public.whatsapp_accounts FOR ALL TO authenticated USING 
 
 -- -------------------------------------------------------------- 9. STORAGE
 INSERT INTO storage.buckets (id, name, public)
-<<<<<<< HEAD
 VALUES ('product-images','product-images', true),
-=======
-VALUES ('product-images','product-images', false),
->>>>>>> origin/main
        ('business-assets','business-assets', false),
        ('knowledge-files','knowledge-files', false)
 ON CONFLICT (id) DO NOTHING;
@@ -507,8 +503,5 @@ USING ((bucket_id = ANY (ARRAY['product-images','business-assets','knowledge-fil
 -- INSERT INTO public.user_roles (user_id, role)
 -- SELECT id, 'SUPER_ADMIN'::app_role FROM auth.users WHERE email = 'you@example.com'
 -- ON CONFLICT DO NOTHING;
-<<<<<<< HEAD
 
 -- Commerce, carts and subscription plans live in 002_commerce_and_plans.sql (run it next).
-=======
->>>>>>> origin/main

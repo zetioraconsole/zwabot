@@ -22,10 +22,6 @@ import path from "node:path";
 import express from "express";
 import pino from "pino";
 import QRCode from "qrcode";
-<<<<<<< HEAD
-=======
-import baileys from "@whiskeysockets/baileys";
->>>>>>> origin/main
 import makeWASocket, {
   useMultiFileAuthState,
   fetchLatestBaileysVersion,
@@ -33,7 +29,6 @@ import makeWASocket, {
   Browsers,
 } from "@whiskeysockets/baileys";
 
-<<<<<<< HEAD
 const processedIds = new Set();
 const chatQueues = new Map();
 function enqueue(key, fn) {
@@ -42,8 +37,6 @@ function enqueue(key, fn) {
   run.finally(() => { if (chatQueues.get(key) === run) chatQueues.delete(key); });
   return run;
 }
-=======
->>>>>>> origin/main
 
 const PORT = Number(process.env.PORT || 8088);
 const WORKER_TOKEN = process.env.WORKER_TOKEN || "";
@@ -208,7 +201,6 @@ async function startSession({ businessId, accountId, method, phoneNumber }) {
     if (type !== "notify") return;
     for (const msg of messages) {
       try {
-<<<<<<< HEAD
         if (!msg.message) continue;
         const jid = msg.key.remoteJid || "";
         const msgId = msg.key.id;
@@ -217,10 +209,6 @@ async function startSession({ businessId, accountId, method, phoneNumber }) {
           processedIds.add(msgId);
           if (processedIds.size > 5000) processedIds.delete(processedIds.values().next().value);
         }
-=======
-        if (!msg.message || msg.key.fromMe) continue;
-        const jid = msg.key.remoteJid || "";
->>>>>>> origin/main
         if (jid.endsWith("@g.us") || jid === "status@broadcast") continue;
 
         const m = msg.message;
@@ -241,7 +229,6 @@ async function startSession({ businessId, accountId, method, phoneNumber }) {
 
         if (!text) continue;
 
-<<<<<<< HEAD
         // Owner commands typed from the business phone: /takeover, /release
         if (msg.key.fromMe) {
           if (!text.trim().startsWith("/")) continue;
@@ -252,8 +239,6 @@ async function startSession({ businessId, accountId, method, phoneNumber }) {
         }
 
         await enqueue(`${accountId}:${jid}`, async () => {
-=======
->>>>>>> origin/main
         const result = await postToApp("/api/public/whatsapp/inbound-message", {
           accountId,
           phone: jid.split("@")[0],
@@ -267,7 +252,6 @@ async function startSession({ businessId, accountId, method, phoneNumber }) {
         if (result?.reply) {
           await sock.sendMessage(jid, { text: String(result.reply) });
         }
-<<<<<<< HEAD
         for (const m of Array.isArray(result?.media) ? result.media : []) {
           try {
             if (m?.type === "image" && m.url) {
@@ -281,8 +265,6 @@ async function startSession({ businessId, accountId, method, phoneNumber }) {
           await sock.sendMessage(jid, { text: String(result.receipt) });
         }
         });
-=======
->>>>>>> origin/main
       } catch (error) {
         logger.error({ err: String(error) }, "failed handling inbound message");
       }
