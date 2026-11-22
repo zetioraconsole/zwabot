@@ -20,6 +20,7 @@ WORKDIR /app
 ENV NODE_ENV=production
 ENV HOST=0.0.0.0
 ENV SESSIONS_DIR=/data/sessions
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
 COPY whatsapp-worker/package.json ./whatsapp-worker/
 RUN cd whatsapp-worker && npm install --omit=dev && npm cache clean --force
 COPY whatsapp-worker/server.js ./whatsapp-worker/
